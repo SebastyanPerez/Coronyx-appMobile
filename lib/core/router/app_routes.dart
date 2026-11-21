@@ -1,6 +1,10 @@
 /// Catálogo completo de las 52 pantallas (32 de "02 – Versión final mejorada"
 /// + 20 de "GC Gestión del conocimiento" y "GC Estados y recorridos").
 abstract final class AppRoutes {
+  // Splash y Onboarding inicial
+  static const String splash = '/splash';
+  static const String onboarding = '/onboarding';
+
   // Catálogo / Selector rápido de las 52 pantallas
   static const String catalog = '/catalogo';
 

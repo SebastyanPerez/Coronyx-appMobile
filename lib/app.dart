@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'core/router/app_routes.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/p00_onboarding_screen.dart';
+import 'features/auth/presentation/p00_splash_screen.dart';
 import 'features/auth/presentation/p2_auth_screens.dart';
 import 'features/catalog/presentation/screens_catalog_screen.dart';
 import 'features/home_map/presentation/p2_home_map_screens.dart';
@@ -14,7 +16,7 @@ import 'features/scanner/presentation/p2_scanner_screens.dart';
 class PecoxApp extends StatelessWidget {
   const PecoxApp({
     super.key,
-    this.initialRoute = AppRoutes.p01Login,
+    this.initialRoute = AppRoutes.splash,
   });
 
   final String initialRoute;
@@ -27,6 +29,8 @@ class PecoxApp extends StatelessWidget {
       theme: AppTheme.light,
       initialRoute: initialRoute,
       routes: {
+        AppRoutes.splash: (_) => const P00SplashScreen(),
+        AppRoutes.onboarding: (_) => const P00OnboardingScreen(),
         AppRoutes.catalog: (_) => const ScreensCatalogScreen(),
         // Página 2: 02 – Versión final mejorada (32 pantallas)
         AppRoutes.p01Login: (_) => const P01LoginScreen(),

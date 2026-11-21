@@ -72,5 +72,43 @@ abstract final class AppTheme {
             borderRadius: BorderRadius.circular(AppRadii.md),
           ),
         ),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: _PecoxPageTransitionsBuilder(),
+            TargetPlatform.iOS: _PecoxPageTransitionsBuilder(),
+            TargetPlatform.windows: _PecoxPageTransitionsBuilder(),
+            TargetPlatform.macOS: _PecoxPageTransitionsBuilder(),
+            TargetPlatform.linux: _PecoxPageTransitionsBuilder(),
+          },
+        ),
       );
+}
+
+class _PecoxPageTransitionsBuilder extends PageTransitionsBuilder {
+  const _PecoxPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    final curved = CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    return FadeTransition(
+      opacity: curved,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.03),
+          end: Offset.zero,
+        ).animate(curved),
+        child: child,
+      ),
+    );
+  }
 }

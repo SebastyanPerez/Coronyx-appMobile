@@ -11,6 +11,7 @@ import '../../../shared/widgets/gc_bottom_nav.dart';
 import '../../../shared/widgets/gc_pill_button.dart';
 import '../../../shared/widgets/p2_common_widgets.dart';
 import '../../../shared/widgets/pecox_eco_wallet_card.dart';
+import '../../../shared/widgets/pecox_fade_slide_in.dart';
 import '../../../shared/widgets/pecox_feedback.dart';
 import '../../../shared/widgets/pecox_status_badge.dart';
 import '../../../shared/widgets/pecox_surface_card.dart';
@@ -154,16 +155,20 @@ class P09HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              PecoxEcoWalletCard(
-                points: 200,
-                goalPoints: 500,
-                rewardLabel: 'Canasta básica',
-                streakDays: 4,
-                onTap: () =>
-                    Navigator.of(context).pushNamed(AppRoutes.p19Rewards),
+              PecoxFadeSlideIn(
+                child: PecoxEcoWalletCard(
+                  points: 200,
+                  goalPoints: 500,
+                  rewardLabel: 'Canasta básica',
+                  streakDays: 4,
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.p19Rewards),
+                ),
               ),
               const SizedBox(height: 16),
-              PecoxSurfaceCard(
+              PecoxFadeSlideIn(
+                delay: const Duration(milliseconds: 80),
+                child: PecoxSurfaceCard(
                 onTap: () =>
                     Navigator.of(context).pushNamed(AppRoutes.p12ScanQr),
                 gradient: AppGradients.mintSurfaceGradient,
@@ -208,12 +213,13 @@ class P09HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 16,
-                      color: AppColors.green,
-                    ),
-                  ],
+                      const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 16,
+                        color: AppColors.green,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),

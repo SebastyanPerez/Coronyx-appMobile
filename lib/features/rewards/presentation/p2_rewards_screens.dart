@@ -8,6 +8,7 @@ import '../../../shared/widgets/gc_pill_button.dart';
 import '../../../shared/widgets/p2_common_widgets.dart';
 import '../../../shared/widgets/pecox_empty_state.dart';
 import '../../../shared/widgets/pecox_feedback.dart';
+import '../../../shared/widgets/pecox_shimmer_card.dart';
 import '../../../shared/widgets/pecox_status_badge.dart';
 import '../../../shared/widgets/pecox_surface_card.dart';
 
@@ -187,8 +188,16 @@ class P19RewardsScreen extends StatefulWidget {
 
 class _P19RewardsScreenState extends State<P19RewardsScreen> {
   int _filterIndex = 0;
+  bool _isRefreshing = false;
 
   static const _categories = ['Todos', 'Abarrotes', 'Limpieza', 'Otros'];
+
+  Future<void> _handleRefresh() async {
+    setState(() => _isRefreshing = true);
+    await Future.delayed(const Duration(milliseconds: 650));
+    if (!mounted) return;
+    setState(() => _isRefreshing = false);
+  }
 
   List<_RewardItem> get _filteredRewards {
     if (_filterIndex == 0) return _rewardsCatalog;
@@ -243,8 +252,12 @@ class _P19RewardsScreenState extends State<P19RewardsScreen> {
             ),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+            child: RefreshIndicator(
+              color: AppColors.green,
+              onRefresh: _handleRefresh,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -325,7 +338,17 @@ class _P19RewardsScreenState extends State<P19RewardsScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  if (items.isEmpty)
+                  if (_isRefreshing)
+                    const Column(
+                      children: [
+                        PecoxShimmerCard(),
+                        SizedBox(height: 10),
+                        PecoxShimmerCard(),
+                        SizedBox(height: 10),
+                        PecoxShimmerCard(),
+                      ],
+                    )
+                  else if (items.isEmpty)
                     PecoxEmptyState(
                       icon: Icons.card_giftcard_rounded,
                       title: 'Sin premios en esta categoría',
@@ -360,6 +383,7 @@ class _P19RewardsScreenState extends State<P19RewardsScreen> {
                     }),
                 ],
               ),
+            ),
             ),
           ),
         ],
