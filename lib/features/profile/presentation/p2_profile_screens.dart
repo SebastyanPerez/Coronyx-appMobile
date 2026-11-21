@@ -5,90 +5,172 @@ import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/gc_bottom_nav.dart';
 import '../../../shared/widgets/gc_pill_button.dart';
 import '../../../shared/widgets/p2_common_widgets.dart';
+import '../../../shared/widgets/pecox_feedback.dart';
+import '../../../shared/widgets/pecox_status_badge.dart';
+import '../../../shared/widgets/pecox_surface_card.dart';
 
 /// 26 Perfil mejorado (891:592) + Acceso a Centro de Conocimiento (GC)
 class P26ProfileScreen extends StatelessWidget {
   const P26ProfileScreen({super.key});
 
+  void _showLogoutSheet(BuildContext context) {
+    PecoxFeedback.showSheet<void>(
+      context: context,
+      builder: (ctx) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: const BoxDecoration(
+              color: AppColors.statusErrorBg,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.logout_rounded,
+              color: AppColors.statusError,
+              size: 28,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            '¿Cerrar sesión?',
+            style: GoogleFonts.montserrat(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: AppColors.navy,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Tendrás que volver a ingresar tus credenciales para acceder a PECOX.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 13,
+              color: AppColors.muted,
+            ),
+          ),
+          const SizedBox(height: 22),
+          Row(
+            children: [
+              Expanded(
+                child: GcPillButton(
+                  label: 'Cancelar',
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: GcPillButton(
+                  label: 'Cerrar sesión',
+                  isPrimary: true,
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                    Navigator.of(context).pushReplacementNamed(
+                      AppRoutes.p01Login,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           const P2Header(title: 'Mi perfil', showBack: false),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
               child: Column(
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: const BoxDecoration(
-                      color: AppColors.mint,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'LG',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.green,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    'Luis Gamboa',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.navy,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'luis@pecox.app · DNI ••••5678',
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      color: AppColors.muted,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: AppColors.softAlt,
-                      border: Border.all(color: AppColors.borderSage),
-                      borderRadius: BorderRadius.circular(AppRadii.lg),
-                    ),
-                    child: const Row(
+                  PecoxSurfaceCard(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: _ProfileStatItem(
-                            value: '200',
-                            label: 'PUNTOS',
+                        Container(
+                          width: 84,
+                          height: 84,
+                          decoration: const BoxDecoration(
+                            gradient: AppGradients.ecoWalletGradient,
+                            shape: BoxShape.circle,
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'LG',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 26,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.white,
+                            ),
                           ),
                         ),
-                        Expanded(
-                          child: _ProfileStatItem(
-                            value: '10 kg',
-                            label: 'RECICLADOS',
+                        const SizedBox(height: 12),
+                        Text(
+                          'Luis Gamboa',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 21,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.navy,
                           ),
                         ),
-                        Expanded(
-                          child: _ProfileStatItem(
-                            value: '5 kg',
-                            label: 'CO₂',
+                        const SizedBox(height: 4),
+                        Text(
+                          'luis@pecox.app · DNI ••••5678',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            color: AppColors.muted,
                           ),
                         ),
+                        const SizedBox(height: 10),
+                        const PecoxStatusBadge.active('Eco Básico · Nivel 1'),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: _ProfileStatCard(
+                          icon: Icons.stars_rounded,
+                          iconColor: AppColors.statusWarning,
+                          iconBg: AppColors.statusWarningBg,
+                          value: '200',
+                          label: 'Puntos',
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: _ProfileStatCard(
+                          icon: Icons.local_drink_rounded,
+                          iconColor: AppColors.green,
+                          iconBg: AppColors.pointsCard,
+                          value: '24',
+                          label: 'Botellas PET',
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: _ProfileStatCard(
+                          icon: Icons.eco_rounded,
+                          iconColor: AppColors.greenLight,
+                          iconBg: AppColors.pointsCard,
+                          value: '10 kg',
+                          label: 'Reciclados',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
                   _ProfileMenuTile(
+                    icon: Icons.library_books_rounded,
                     label: 'Centro de conocimiento PECOX (GC)',
                     isHighlighted: true,
                     onTap: () => Navigator.of(context).pushNamed(
@@ -97,13 +179,7 @@ class P26ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   _ProfileMenuTile(
-                    label: 'Editar perfil',
-                    onTap: () => Navigator.of(context).pushNamed(
-                      AppRoutes.p27EditProfile,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  _ProfileMenuTile(
+                    icon: Icons.confirmation_number_rounded,
                     label: 'Mis canjes',
                     onTap: () => Navigator.of(context).pushNamed(
                       AppRoutes.p25MyRedemptions,
@@ -111,6 +187,7 @@ class P26ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   _ProfileMenuTile(
+                    icon: Icons.emoji_events_rounded,
                     label: 'Logros y ranking',
                     onTap: () => Navigator.of(context).pushNamed(
                       AppRoutes.p31Achievements,
@@ -118,17 +195,26 @@ class P26ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   _ProfileMenuTile(
-                    label: 'Educación ambiental',
+                    icon: Icons.menu_book_rounded,
+                    label: 'Educación ambiental PET',
                     onTap: () => Navigator.of(context).pushNamed(
                       AppRoutes.p32EnvironmentalEd,
                     ),
                   ),
                   const SizedBox(height: 10),
                   _ProfileMenuTile(
-                    label: 'Cerrar sesión',
+                    icon: Icons.edit_rounded,
+                    label: 'Editar perfil',
                     onTap: () => Navigator.of(context).pushNamed(
-                      AppRoutes.p28ConfirmLogout,
+                      AppRoutes.p27EditProfile,
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  _ProfileMenuTile(
+                    icon: Icons.logout_rounded,
+                    label: 'Cerrar sesión',
+                    isDestructive: true,
+                    onTap: () => _showLogoutSheet(context),
                   ),
                 ],
               ),
@@ -141,89 +227,118 @@ class P26ProfileScreen extends StatelessWidget {
   }
 }
 
-class _ProfileStatItem extends StatelessWidget {
-  const _ProfileStatItem({required this.value, required this.label});
+class _ProfileStatCard extends StatelessWidget {
+  const _ProfileStatCard({
+    required this.icon,
+    required this.iconColor,
+    required this.iconBg,
+    required this.value,
+    required this.label,
+  });
 
+  final IconData icon;
+  final Color iconColor;
+  final Color iconBg;
   final String value;
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: GoogleFonts.montserrat(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: AppColors.green,
+    return PecoxSurfaceCard(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+      child: Column(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: iconBg,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, size: 20, color: iconColor),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-            color: AppColors.muted,
+          const SizedBox(height: 10),
+          Text(
+            value,
+            style: GoogleFonts.montserrat(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: AppColors.navy,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 2),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: AppColors.muted,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _ProfileMenuTile extends StatelessWidget {
   const _ProfileMenuTile({
+    required this.icon,
     required this.label,
     required this.onTap,
     this.isHighlighted = false,
+    this.isDestructive = false,
   });
 
+  final IconData icon;
   final String label;
   final VoidCallback onTap;
   final bool isHighlighted;
+  final bool isDestructive;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: isHighlighted ? AppColors.pointsCard : AppColors.white,
-      borderRadius: BorderRadius.circular(AppRadii.lg),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadii.lg),
-        child: Container(
-          width: double.infinity,
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.borderSage),
-            borderRadius: BorderRadius.circular(AppRadii.lg),
+    final fgColor = isDestructive
+        ? AppColors.statusError
+        : (isHighlighted ? AppColors.green : AppColors.navy);
+    final iconBg = isDestructive
+        ? AppColors.statusErrorBg
+        : (isHighlighted ? AppColors.white : AppColors.pointsCard);
+
+    return PecoxSurfaceCard(
+      onTap: onTap,
+      gradient: isHighlighted ? AppGradients.mintSurfaceGradient : null,
+      borderColor: isHighlighted ? AppColors.borderSage : AppColors.borderLight,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Row(
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: iconBg,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, size: 19, color: fgColor),
           ),
-          alignment: Alignment.centerLeft,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  label,
-                  style: GoogleFonts.inter(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: isHighlighted ? AppColors.green : AppColors.navy,
-                  ),
-                ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: fgColor,
               ),
-              Text(
-                '›',
-                style: GoogleFonts.inter(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.green,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Icon(
+            Icons.chevron_right_rounded,
+            size: 20,
+            color: isDestructive ? AppColors.statusError : AppColors.muted,
+          ),
+        ],
       ),
     );
   }
@@ -236,66 +351,97 @@ class P27EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           const P2Header(title: 'Editar perfil'),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(36, 12, 36, 24),
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
               child: Column(
                 children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: const BoxDecoration(
-                      color: AppColors.mint,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'LG',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.green,
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        width: 86,
+                        height: 86,
+                        decoration: const BoxDecoration(
+                          gradient: AppGradients.ecoWalletGradient,
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          'LG',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.white,
+                          ),
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: () => PecoxFeedback.showInfo(
+                          context,
+                          'Selección de foto disponible al conectar almacenamiento.',
+                        ),
+                        borderRadius: BorderRadius.circular(AppRadii.pill),
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.borderSage),
+                            boxShadow: AppShadows.cardShadow,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            size: 15,
+                            color: AppColors.green,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Cambiar foto',
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.green,
+                  const SizedBox(height: 20),
+                  PecoxSurfaceCard(
+                    padding: const EdgeInsets.all(18),
+                    child: const Column(
+                      children: [
+                        P2FormField(
+                          label: 'NOMBRE COMPLETO',
+                          initialValue: 'Luis Gamboa',
+                        ),
+                        SizedBox(height: 16),
+                        P2FormField(
+                          label: 'CORREO ELECTRÓNICO',
+                          initialValue: 'luis@pecox.app',
+                        ),
+                        SizedBox(height: 16),
+                        P2FormField(
+                          label: 'TIPO DE DOCUMENTO',
+                          initialValue: 'DNI',
+                        ),
+                        SizedBox(height: 16),
+                        P2FormField(
+                          label: 'NÚMERO DE DOCUMENTO',
+                          initialValue: '••••5678',
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const P2FormField(
-                    label: 'NOMBRE COMPLETO',
-                    initialValue: 'Luis Gamboa',
-                  ),
-                  const SizedBox(height: 16),
-                  const P2FormField(
-                    label: 'CORREO ELECTRÓNICO',
-                    initialValue: 'luis@pecox.app',
-                  ),
-                  const SizedBox(height: 16),
-                  const P2FormField(
-                    label: 'TIPO DE DOCUMENTO',
-                    initialValue: 'DNI',
-                  ),
-                  const SizedBox(height: 16),
-                  const P2FormField(
-                    label: 'NÚMERO DE DOCUMENTO',
-                    initialValue: '••••5678',
-                  ),
-                  const SizedBox(height: 28),
                   GcPillButton(
                     label: 'Guardar cambios',
                     isPrimary: true,
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      PecoxFeedback.showSuccess(
+                        context,
+                        'Cambios guardados correctamente.',
+                      );
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ],
               ),
@@ -315,27 +461,28 @@ class P28ConfirmLogoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9),
+      backgroundColor: AppColors.softAlt,
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 26),
-            child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: PecoxSurfaceCard(
+              borderRadius: AppRadii.xl,
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(AppRadii.xl),
-                border: Border.all(color: AppColors.borderSage),
-              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    '?',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.green,
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      color: AppColors.statusErrorBg,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.logout_rounded,
+                      size: 28,
+                      color: AppColors.statusError,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -347,7 +494,7 @@ class P28ConfirmLogoutScreen extends StatelessWidget {
                       color: AppColors.navy,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   Text(
                     'Tendrás que volver a ingresar tus credenciales para acceder a PECOX.',
                     textAlign: TextAlign.center,
@@ -395,59 +542,74 @@ class P29NotificationsUnreadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           P2Header(
             title: 'Notificaciones',
             trailing: InkWell(
-              onTap: () => Navigator.of(context).pushReplacementNamed(
-                AppRoutes.p30NotificationsRead,
-              ),
-              child: Text(
-                'Marcar leído',
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.green,
+              onTap: () {
+                PecoxFeedback.showSuccess(
+                  context,
+                  'Todas las notificaciones marcadas como leídas.',
+                );
+                Navigator.of(context).pushReplacementNamed(
+                  AppRoutes.p30NotificationsRead,
+                );
+              },
+              borderRadius: BorderRadius.circular(AppRadii.pill),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  'Marcar leído',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.green,
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
               children: const [
                 _NotificationCard(
+                  icon: Icons.stars_rounded,
                   title: 'Tienes puntos por canjear',
                   body: '200 pts acumulados. Revisa las recompensas.',
                   time: 'Hace 5 min',
                   unread: true,
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
                 _NotificationCard(
+                  icon: Icons.location_on_rounded,
                   title: 'Estación cercana activa',
                   body:
-                      'Estación El Porvenir · Santa Aurora a 400 m. Recibe PET vacío 500 ml.',
+                      'Estación El Porvenir · Santa Aurora a 400 m. Recibe botellas PET de 500 ml.',
                   time: 'Hace 2 h',
                   unread: true,
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
                 _NotificationCard(
+                  icon: Icons.local_fire_department_rounded,
                   title: 'No pierdas tu racha',
                   body: 'Llevas 4 días seguidos. Recicla hoy para mantenerla.',
                   time: 'Hace 4 h',
                   unread: true,
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
                 _NotificationCard(
+                  icon: Icons.card_giftcard_rounded,
                   title: 'Nueva recompensa disponible',
                   body: 'Se agregó un nuevo premio a Abarrotes.',
                   time: 'Hace 3 días',
                   unread: false,
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
                 _NotificationCard(
+                  icon: Icons.person_outline_rounded,
                   title: 'Actualiza tu perfil',
                   body: 'Agrega una foto para personalizar tu cuenta.',
                   time: 'Hace 5 días',
@@ -470,42 +632,38 @@ class P30NotificationsReadScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           const P2Header(title: 'Notificaciones'),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
-              children: [
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+              children: const [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    'TODO LEÍDO',
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.green,
-                    ),
-                  ),
+                  child: PecoxStatusBadge.active('Todo al día'),
                 ),
-                const SizedBox(height: 12),
-                const _NotificationCard(
+                SizedBox(height: 12),
+                _NotificationCard(
+                  icon: Icons.stars_rounded,
                   title: 'Tienes puntos por canjear',
                   body: '200 pts acumulados. Revisa las recompensas.',
                   time: 'Hace 5 min',
                   unread: false,
                 ),
-                const SizedBox(height: 12),
-                const _NotificationCard(
+                SizedBox(height: 10),
+                _NotificationCard(
+                  icon: Icons.location_on_rounded,
                   title: 'Estación cercana activa',
                   body:
-                      'Estación El Porvenir · Santa Aurora a 400 m. Recibe PET vacío 500 ml.',
+                      'Estación El Porvenir · Santa Aurora a 400 m. Recibe botellas PET de 500 ml.',
                   time: 'Hace 2 h',
                   unread: false,
                 ),
-                const SizedBox(height: 12),
-                const _NotificationCard(
+                SizedBox(height: 10),
+                _NotificationCard(
+                  icon: Icons.local_fire_department_rounded,
                   title: 'No pierdas tu racha',
                   body: 'Llevas 4 días seguidos. Recicla hoy para mantenerla.',
                   time: 'Hace 4 h',
@@ -523,12 +681,14 @@ class P30NotificationsReadScreen extends StatelessWidget {
 
 class _NotificationCard extends StatelessWidget {
   const _NotificationCard({
+    required this.icon,
     required this.title,
     required this.body,
     required this.time,
     required this.unread,
   });
 
+  final IconData icon;
   final String title;
   final String body;
   final String time;
@@ -536,39 +696,49 @@ class _NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return PecoxSurfaceCard(
+      gradient: unread ? AppGradients.mintSurfaceGradient : null,
+      borderColor: unread ? AppColors.borderSage : AppColors.borderLight,
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: unread ? AppColors.softAlt : AppColors.white,
-        border: Border.all(color: AppColors.borderSage),
-        borderRadius: BorderRadius.circular(AppRadii.lg),
-      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (unread) ...[
-            Container(
-              margin: const EdgeInsets.only(top: 5),
-              width: 8,
-              height: 8,
-              decoration: const BoxDecoration(
-                color: AppColors.green,
-                shape: BoxShape.circle,
-              ),
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: unread ? AppColors.white : AppColors.pointsCard,
+              borderRadius: BorderRadius.circular(10),
             ),
-            const SizedBox(width: 10),
-          ],
+            child: Icon(icon, size: 20, color: AppColors.green),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.navy,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.navy,
+                        ),
+                      ),
+                    ),
+                    if (unread)
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: AppColors.statusActive,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -578,7 +748,7 @@ class _NotificationCard extends StatelessWidget {
                     color: AppColors.muted,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   time,
                   style: GoogleFonts.inter(
@@ -602,7 +772,7 @@ class P31AchievementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           const P2Header(title: 'Logros y ranking'),
@@ -612,41 +782,51 @@ class P31AchievementsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: AppColors.pointsCard,
-                      borderRadius: BorderRadius.circular(AppRadii.lg),
-                    ),
+                  PecoxSurfaceCard(
+                    gradient: AppGradients.ecoWalletGradient,
+                    borderColor: null,
+                    borderRadius: AppRadii.xl,
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Eco Básico · Nivel 1 de 5',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.navy,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Eco Básico · Nivel 1 de 5',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ),
+                            const Icon(
+                              Icons.emoji_events_rounded,
+                              color: AppColors.mint,
+                              size: 26,
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Próximo nivel: Eco Pro',
+                          'Próximo nivel: Eco Pro (50% completado)',
                           style: GoogleFonts.inter(
                             fontSize: 12,
-                            color: AppColors.muted,
+                            color: AppColors.mint,
                           ),
                         ),
                         const SizedBox(height: 14),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: const LinearProgressIndicator(
+                          borderRadius: BorderRadius.circular(AppRadii.pill),
+                          child: LinearProgressIndicator(
                             value: 0.5,
-                            minHeight: 10,
-                            backgroundColor: AppColors.white,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.green,
+                            minHeight: 8,
+                            backgroundColor:
+                                AppColors.white.withValues(alpha: 0.22),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppColors.mint,
                             ),
                           ),
                         ),
@@ -657,39 +837,45 @@ class P31AchievementsScreen extends StatelessWidget {
                   Text(
                     'LOGROS (2/5)',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.6,
                       color: AppColors.navy,
                     ),
                   ),
                   const SizedBox(height: 12),
                   const _SimpleInfoCard(
-                    title: 'Primer reciclaje',
-                    subtitle: 'Completaste tu primer registro',
+                    icon: Icons.verified_rounded,
+                    title: 'Primer reciclaje PET',
+                    subtitle: 'Completaste tu primer depósito en estación',
                   ),
                   const SizedBox(height: 10),
                   const _SimpleInfoCard(
-                    title: '10 reciclajes',
-                    subtitle: 'Reciclaste diez veces',
+                    icon: Icons.local_drink_rounded,
+                    title: '10 botellas PET',
+                    subtitle: 'Validaste diez botellas de 500 ml',
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'RANKING · TRUJILLO',
+                    'RANKING · EL PORVENIR',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.6,
                       color: AppColors.navy,
                     ),
                   ),
                   const SizedBox(height: 12),
                   const _SimpleInfoCard(
+                    icon: Icons.looks_one_rounded,
                     title: '1. María C.',
-                    subtitle: '48 kg reciclados',
+                    subtitle: '48 kg reciclados · 960 pts',
                   ),
                   const SizedBox(height: 10),
                   const _SimpleInfoCard(
-                    title: '2. Luis G.',
-                    subtitle: '10 kg reciclados',
+                    icon: Icons.looks_two_rounded,
+                    title: '2. Luis G. (Tú)',
+                    subtitle: '10 kg reciclados · 200 pts',
                   ),
                 ],
               ),
@@ -717,46 +903,54 @@ class _P32EnvironmentalEdScreenState extends State<P32EnvironmentalEdScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.softAlt,
       body: Column(
         children: [
           const P2Header(title: 'Educación ambiental'),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   P2FilterChips(
-                    labels: const ['Todos', 'PET 500 ml', 'Aluminio', 'Papel'],
+                    labels: const ['Todos', 'PET 500 ml', 'Estación'],
                     selectedIndex: _filterIndex,
                     onSelected: (i) => setState(() => _filterIndex = i),
                   ),
                   const SizedBox(height: 16),
-                  Container(
-                    width: double.infinity,
+                  PecoxSurfaceCard(
+                    gradient: AppGradients.mintSurfaceGradient,
+                    borderColor: AppColors.borderSage,
                     padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: AppColors.pointsCard,
-                      borderRadius: BorderRadius.circular(AppRadii.lg),
-                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '¿SABÍAS QUE...?',
-                          style: GoogleFonts.inter(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.green,
-                          ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.lightbulb_rounded,
+                              size: 18,
+                              color: AppColors.green,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              '¿SABÍAS QUE...?',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0.6,
+                                color: AppColors.green,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Reciclar una lata de aluminio ahorra energía suficiente para ver televisión durante 3 horas.',
+                          'Una botella PET de 500 ml reciclada puede transformarse en fibra textil o nuevos envases, evitando que tarde más de 400 años en degradarse.',
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            height: 1.4,
+                            height: 1.45,
                             color: AppColors.navy,
                           ),
                         ),
@@ -765,29 +959,36 @@ class _P32EnvironmentalEdScreenState extends State<P32EnvironmentalEdScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'TIPS DE RECICLAJE',
+                    'TIPS PARA TU BOTELLA PET 500 ML',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.6,
                       color: AppColors.navy,
                     ),
                   ),
                   const SizedBox(height: 12),
                   const _SimpleInfoCard(
-                    title: 'Separa por material',
-                    subtitle: 'PET vacío, aluminio y papel o cartón seco van separados.',
+                    icon: Icons.water_drop_outlined,
+                    title: 'Vacía por completo la botella',
+                    subtitle:
+                        'La estación mide el peso exacto de una botella PET de 500 ml sin líquido.',
                   ),
                   const SizedBox(height: 10),
                   const _SimpleInfoCard(
-                    title: 'Aplana las cajas',
-                    subtitle: 'Facilita el transporte y el reciclaje.',
+                    icon: Icons.local_drink_rounded,
+                    title: 'Entrégala limpia y seca',
+                    subtitle:
+                        'Facilita la validación óptica y mantiene limpio el acopio.',
                   ),
                   const SizedBox(height: 10),
                   const _SimpleInfoCard(
-                    title: 'Reduce el plástico',
-                    subtitle: 'Utiliza bolsas y botellas reutilizables.',
+                    icon: Icons.qr_code_scanner_rounded,
+                    title: 'Reclama tu ticket QR',
+                    subtitle:
+                        'Presiona "Recibir QR" en la estación para acreditar tus +50 pts.',
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   GcPillButton(
                     label: 'Ir al Centro de Conocimiento PECOX',
                     isPrimary: true,
@@ -807,38 +1008,53 @@ class _P32EnvironmentalEdScreenState extends State<P32EnvironmentalEdScreen> {
 }
 
 class _SimpleInfoCard extends StatelessWidget {
-  const _SimpleInfoCard({required this.title, required this.subtitle});
+  const _SimpleInfoCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
 
+  final IconData icon;
   final String title;
   final String subtitle;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.softAlt,
-        border: Border.all(color: AppColors.borderSage),
-        borderRadius: BorderRadius.circular(AppRadii.lg),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return PecoxSurfaceCard(
+      padding: const EdgeInsets.all(14),
+      child: Row(
         children: [
-          Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: AppColors.navy,
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: AppColors.pointsCard,
+              borderRadius: BorderRadius.circular(10),
             ),
+            child: Icon(icon, size: 20, color: AppColors.green),
           ),
-          const SizedBox(height: 6),
-          Text(
-            subtitle,
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              color: AppColors.muted,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.navy,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: AppColors.muted,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

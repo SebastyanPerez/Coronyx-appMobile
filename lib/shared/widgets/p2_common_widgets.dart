@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 import '../../core/router/app_routes.dart';
@@ -71,28 +72,29 @@ class P2Header extends StatelessWidget {
               trailing!,
               const SizedBox(width: 8),
             ],
-            InkWell(
-              onTap: () => Navigator.of(context).pushNamed(AppRoutes.catalog),
-              borderRadius: BorderRadius.circular(AppRadii.pill),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.mint,
-                  borderRadius: BorderRadius.circular(AppRadii.pill),
-                ),
-                child: Text(
-                  '52 vistas',
-                  style: GoogleFonts.inter(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.green,
+            if (kDebugMode)
+              InkWell(
+                onTap: () => Navigator.of(context).pushNamed(AppRoutes.catalog),
+                borderRadius: BorderRadius.circular(AppRadii.pill),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.mint,
+                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                  ),
+                  child: Text(
+                    '52 vistas',
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.green,
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

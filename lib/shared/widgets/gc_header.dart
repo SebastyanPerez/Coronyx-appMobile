@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_ui/material_ui.dart';
 import '../../core/router/app_routes.dart';
@@ -62,7 +63,7 @@ class GcHeader extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (showCatalogButton)
+              if (kDebugMode && showCatalogButton)
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed(
                     AppRoutes.catalog,

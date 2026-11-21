@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 import '../../../core/router/app_routes.dart';
@@ -16,20 +17,17 @@ class _BrandBadge extends StatelessWidget {
       children: [
         const SizedBox(height: 20),
         Container(
-          width: 80,
-          height: 80,
+          width: 76,
+          height: 76,
           decoration: const BoxDecoration(
-            color: AppColors.mint,
+            gradient: AppGradients.ecoWalletGradient,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
-          child: Text(
-            '✓',
-            style: GoogleFonts.inter(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.green,
-            ),
+          child: const Icon(
+            Icons.recycling_rounded,
+            size: 38,
+            color: AppColors.white,
           ),
         ),
         const SizedBox(height: 12),
@@ -67,32 +65,33 @@ class P01LoginScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(36, 12, 36, 24),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(AppRoutes.catalog),
-                  borderRadius: BorderRadius.circular(AppRadii.pill),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.mint,
-                      borderRadius: BorderRadius.circular(AppRadii.pill),
-                    ),
-                    child: Text(
-                      '52 vistas',
-                      style: GoogleFonts.inter(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.green,
+              if (kDebugMode)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(AppRoutes.catalog),
+                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.mint,
+                        borderRadius: BorderRadius.circular(AppRadii.pill),
+                      ),
+                      child: Text(
+                        '52 vistas',
+                        style: GoogleFonts.inter(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.green,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
               const _BrandBadge(subtitle: 'Inicia sesión para continuar'),
               const SizedBox(height: 36),
               const P2FormField(
@@ -130,19 +129,21 @@ class P01LoginScreen extends StatelessWidget {
                   AppRoutes.p09Home,
                 ),
               ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () => Navigator.of(context).pushNamed(
-                  AppRoutes.p02LoginError,
-                ),
-                child: Text(
-                  'Ver estado de error de login',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    color: AppColors.muted,
+              if (kDebugMode) ...[
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    AppRoutes.p02LoginError,
+                  ),
+                  child: Text(
+                    'Ver estado de error de login',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppColors.muted,
+                    ),
                   ),
                 ),
-              ),
+              ],
               const SizedBox(height: 8),
               Text(
                 'o continuar con',

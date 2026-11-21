@@ -510,7 +510,7 @@ class GcStatePublicScreen extends StatelessWidget {
                   const GcInfoBox(
                     title: 'PILOTO EL PORVENIR',
                     body:
-                        'PET vacío, aluminio y papel o cartón seco, según las condiciones de la estación.',
+                        'Botellas PET de 500 ml vacías y limpias, según las condiciones de la estación piloto.',
                   ),
                   const SizedBox(height: 12),
                   GcKnowledgeCard(
@@ -837,7 +837,7 @@ class GcStateFaqScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'El piloto recibe PET vacío, aluminio y papel o cartón seco.',
+                          'El piloto recibe exclusivamente botellas de plástico PET de 500 ml vacías.',
                           style: AppTypography.boxBody,
                         ),
                         const SizedBox(height: 12),
